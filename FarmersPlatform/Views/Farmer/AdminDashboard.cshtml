@@ -1,0 +1,522 @@
+﻿@model FarmersPlatform.Models.Farmer
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@Model.FirstName @Model.LastName | Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="~/SB_ADMIN/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/SB_ADMIN/css/sb-admin-2.min.css" rel="stylesheet" />
+
+
+    <style>
+
+        .farmer-dropdown {
+            margin-left: auto; /* Move the dropdown button to the right */
+        }
+
+        .dropdown .btn-secondary {
+            background-color: #000;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            border: none;
+            transition: background-color 0.5s, color 0.5s;
+            margin-left: auto; /* Update to margin-left: auto */
+            font-size: 18px;
+            margin-right: 50px;
+        }
+
+            .dropdown .btn-secondary:hover {
+                background-color: #fff;
+                color: #000;
+                transition: background-color 0.5s, color 0.5s;
+            }
+
+            .dropdown .btn-secondary:focus {
+                background-color: #fff;
+                color: #000;
+            }
+
+        .dropdown-menu {
+            color: #fff;
+            border: none;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+            .dropdown-menu .dropdown-item {
+                background-color: #fff;
+                color: #000;
+                transition: background-color 0.5s, color 0.5s;
+            }
+
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: #000;
+                    color: #fff;
+                    transition: background-color 0.5s, color 0.5s;
+                }
+
+        .appbar .btn-primary {
+            background-color: #006800;
+            color: #fff;
+            margin-right: 10px;
+            border: none;
+            font-size: 20px;
+        }
+
+            .appbar .btn-primary:hover {
+                background-color: white;
+                color: #006800;
+                transition: background-color 0.5s, color 0.5s; /* Add transition effect */
+            }
+
+        .custom-navbar {
+            background-color: #006800;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .company-logo {
+            width: 70px; /* Adjust the width value as needed */
+            height: 100%;
+            object-fit: contain;
+            margin-right: 20px; /* Adjust the margin-right value as needed */
+            margin-left: -20px;
+        }
+
+    </style>
+
+
+
+
+
+
+
+</head>
+
+<body id="page-top">
+
+
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div  id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light  topbar mb-4 static-top shadow custom-navbar">
+
+
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <div class="logo">
+                        <a href="#top">
+                            <img src="@Url.Content("~/Images/FreshfulLogo.png")" alt="Company Logo" class="company-logo" />
+                        </a>
+                    </div>
+
+                    <div class="appbar">
+                        <a class="btn btn-primary" href="@Url.Action("GoToFarmerInterface", "Farmer", new { isLoggedIn = true, farmerId = Model.FarmerId })">
+                            My Farm
+                        </a>
+                        <a class="btn btn-primary" href="@Url.Action("FarmerOrders", "Farmer", new { farmerId = Model.FarmerId })">
+                            Orders
+                        </a>
+                   </div>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        
+
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@Model.FirstName @Model.LastName</span>
+
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="@Url.Action("PersonalDetails", "Farmer", new { farmerId = Model.FarmerId })">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Personal Details
+                                </a>
+                               
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <a href="#" onclick="window.print()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+                        </a>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Earnings (Monthly)
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$@ViewBag.MonthlyEarnings</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Earnings (Annual)
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$@ViewBag.AnnualEarnings</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Completed Orders
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.completedOrdersPercent%</div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-info" role="progressbar"
+                                                             style="width: @ViewBag.completedOrdersPercent%" aria-valuenow="50" aria-valuemin="0"
+                                                             aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Days To Ship Order
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.AverageDaysToShip</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Products Per Order
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.AverageAmountOfProducts</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Average Order Price
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$@ViewBag.AverageOrderPrice</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Vegtables % In Orders
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.PercentageOfVegetablesSold%</div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-info" role="progressbar"
+                                                             style="width: @ViewBag.PercentageOfVegetablesSold%" aria-valuenow="50" aria-valuemin="0"
+                                                             aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Pending Orders
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.AmountPendingOrders</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                                      
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                                    
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="monthlyIncomeArray" data-income="@Html.Raw(Json.Serialize(ViewBag.MonthlyIncomeArray))">
+                        </div>
+
+                        <div id="OrderPrice0To50" 0To50="@Html.Raw(Json.Serialize(ViewBag._0To50))">
+                        </div>
+
+                        <div id="OrderPrice50To100" 50To100="@Html.Raw(Json.Serialize(ViewBag._50To100))">
+                        </div>
+
+                        <div id="OrderPrice100Plus" 100Plus="@Html.Raw(Json.Serialize(ViewBag._100Plus))">
+                        </div>
+
+
+
+                        <!-- Pie Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Order Final Prices</h6>
+                                </div>
+
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> 0-50$
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> 50-100$
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> +100$
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- End of Main Content -->
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; 2023 Freshful. All rights reserved.</span>
+
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+            </div>
+
+        </div>
+        </div>
+        <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="@Url.Action("Logout", "Farmer", new { farmerId = Model.FarmerId })">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="~/SB_ADMIN/vendor/jquery/jquery.min.js"></script>
+        <script src="~/SB_ADMIN/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript -->
+        <script src="~/SB_ADMIN/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages -->
+        <script src="~/SB_ADMIN/js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="~/SB_ADMIN/vendor/chart.js/Chart.min.js"></script>
+
+        <script src="~/SB_ADMIN/js/demo/chart-area-demo.js"></script>
+        <script src="~/SB_ADMIN/js/demo/chart-pie-demo.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,308 @@
+﻿@model FarmersPlatform.Models.Customer
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.FirstName @Model.LastName | Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+
+    <style>
+
+        .app-bar {
+            position: sticky;
+            top: 0;
+            background-color: #006800;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 999;
+            justify-content: flex-start; /* Align items to the left */
+        }
+
+            .app-bar .login {
+                display: flex;
+                align-items: center;
+                margin-left: auto; /* Move the login section to the right */
+            }
+
+            
+
+
+        .app-bar .btn-primary {
+            background-color: #006800;
+            color: #fff;
+            margin-right: 10px;
+            border: none;
+            font-size: 20px;
+        }
+
+            .app-bar .btn-primary:hover {
+                background-color: white;
+                color: #006800;
+                transition: background-color 0.5s, color 0.5s; /* Add transition effect */
+            }
+
+                .app-bar .btn-primary:focus {
+                    background-color: #fff;
+                    color: #000;
+                }
+
+            .app-bar .dropdown-menu {
+                background-color: #fff;
+            }
+
+                .app-bar .dropdown-menu .dropdown-item {
+                    color: #000;
+                }
+
+                    .app-bar .dropdown-menu .dropdown-item:hover {
+                        background-color: #000;
+                        color: #fff;
+                        transition: background-color 0.5s, color 0.5s;
+                    }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .company-logo {
+            width: 120px; /* Adjust the width value as needed */
+            height: 100%;
+            object-fit: contain;
+            margin-right: 20px; /* Adjust the margin-right value as needed */
+        }
+
+        .order-card {
+            width: 1300px;
+            margin: 10px;
+            background-color: #FFFFE0;
+            border-radius: 10px; /* Add a slight border-radius for a softer look */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Add a slight shadow effect */
+            padding: 20px; /* Add some padding for spacing inside the card */
+            border: none; /* Remove the border */
+        }
+
+            .order-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 10px; /* Add some spacing below the title */
+        }
+
+        .product-item {
+            margin-bottom: 20px; /* Add some spacing between product items */
+        }
+
+        .order-card.shipped {
+            background-color: #90EE90;
+        }
+
+        .floating-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, orange, black); /* Orange to White gradient background */
+            border-radius: 9px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 9999; /* Ensure it appears above other elements */
+            color: white; /* White text color */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Big shadow */
+            font-size: 26px;
+            font-family: Calibri;
+        }
+
+        .floating-card-content {
+            text-align: center;
+        }
+
+        .close-button {
+            background-color: indianred;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+            .close-button:hover {
+                background-color: #fff;
+                color: indianred;
+            }
+
+            .close-button:focus {
+                outline: none;
+            }
+
+        .modal-trigger-btn {
+            background-color: black;
+            border: none;
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <!-- Farmer Details Modal -->
+    @if (ViewBag.Farmer != null)
+    {
+        <div class="floating-card">
+            <div class="floating-card-content">
+                <p><strong>Farmer Name:</strong> @ViewBag.FarmerFullName</p>
+                <p><strong>Farmer Email:</strong> @ViewBag.FarmerEmail</p>
+
+                <button class="close-button" onclick="closeFloatingCard()">Close</button>
+            </div>
+        </div>
+    }
+
+
+
+
+    <div class="app-bar">
+        <div class="logo">
+            <a href="#top">
+                <img src="@Url.Content("~/Images/FreshfulLogo.png")" alt="Company Logo" class="company-logo" />
+            </a>
+        </div>
+        <div class="navigation">
+                <a href="@Url.Action("GoToCustomerInterface", "Customer", new { isLoggedIn = true, customerId = Model.CustomerId })" class="btn btn-primary">Farmers</a>
+        </div>
+
+        <div class="login">
+            
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @Model.FirstName
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+
+                        <a href="@Url.Action("PersonalDetails", "Customer", new { customerId = Model.CustomerId })" class="dropdown-item">Personal Details</a>
+                        <a href="@Url.Action("Logout", "Customer", new { customerId = Model.CustomerId })" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            
+            <i class="basket-icon fas fa-shopping-cart"></i>
+        </div>
+    </div>
+
+
+    <div class="container mt-4">
+        @if (ViewBag.OrdersLength == 0)
+        {
+         <h1 class="text-center">Incoming Orders</h1>
+            <p>
+                <h2 class="text-center">You do not have any pending or completed orders yet.</h2>
+            </p>
+        }
+        else
+        {
+            <h1 class="text-center">Your Orders | @ViewBag.OrdersLength</h1>
+        }
+
+
+        @foreach (var order in ViewBag.Orders)
+        {
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-12">
+                    <div class="card order-card @((order.OrderShipped) ? "shipped" : "")">
+                        <div class="card-body">
+                            <h5 class="card-title">Order ID: @order.OrderId</h5>
+                            <p class="card-text">Order Date: @order.OrderDate.ToString("yyyy-MM-dd")</p>
+                            <p class="card-text">Final Price: $@order.FinalPrice</p>
+                            @if (!string.IsNullOrEmpty(order.RequestMessage))
+                            {
+                                <p><strong>Customer's Request Note: @order.RequestMessage</strong></p>
+                            }
+
+                            <a class="btn btn-primary modal-trigger-btn" href="@Url.Action("GetFarmerDetails", "Customer", new { customerId = Model.CustomerId, farmerId = order.FarmerId })">Farmer Details</a>
+                                                                                                                         
+
+                            <div class="form-check form-switch d-flex justify-content-end">
+                                <label class="form-check-label d-block mb-1" for="orderShippedCheckbox_@order.OrderId">
+                                    @(order.OrderShipped ? "Order Shipped" : "Not Yet Shipped")
+                                    @if (order.OrderShipped && order.ShipDate != null)
+                                    {
+                                        <br />
+                                        <span>
+                                            Shipping Date: @order.ShipDate.ToString("yyyy-MM-dd")
+                                        </span>
+                                    }
+                                </label>
+                            </div>
+
+                            <div class="row">
+                                @if (order.Products == null || order.Products.Count == 0)
+                                {
+                                    <div class="col-md-12">
+                                        <p>The order completion has failed, you will not be charged for this order.</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <h6 class="card-subtitle mb-2">Products:</h6>
+
+                                    @foreach (var product in order.Products)
+                                    {
+                                        <div class="col-md-3">
+                                            <div class="product-item">
+                                                <img src="@Url.Content("~/Images/" + @product.Image)" alt="Product Image" style="width: 200px; height: 100px;" />
+                                                <p>
+                                                    @product.Name - Price: $@product.Price
+                                                </p> Quantity: @product.Quantity
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script>
+        function ToggleOrderShipped(orderId, farmerId) {
+            // Send the orderId to the controller using URL ACTION
+            var orderShippedCheckbox = document.getElementById("orderShippedCheckbox_" + orderId);
+            var isShipped = orderShippedCheckbox.checked;
+
+            // Redirect to the controller action with the parameters
+            var url = '@Url.Action("ToggleOrderShipped", "Farmer")?orderId=' + orderId + '&farmerId=' + farmerId;
+            window.location.href = url;
+        }
+
+
+
+        function closeFloatingCard() {
+            var floatingCard = document.querySelector('.floating-card');
+            floatingCard.style.display = 'none';
+        }
+    </script>
+
+
+</body>
+</html>

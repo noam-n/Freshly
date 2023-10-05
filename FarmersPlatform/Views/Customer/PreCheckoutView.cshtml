@@ -1,0 +1,184 @@
+﻿@model FarmersPlatform.Models.Customer
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PreCheckoutView</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <!-- Add any additional styles or scripts you need -->
+    <style>
+        /* Center all content vertically and horizontally */
+        body {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #4682B4; 
+        }
+
+        .section-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 70%;
+        }
+
+        /* Add styling for sections */
+        section {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff; /* Light blue background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding shadow */
+            width: 100%; /* Set width to 100% */
+            box-sizing: border-box;
+        }
+
+        /* Style the Place Order button */
+        .place-order {
+            text-align: center;
+        }
+
+        .order-summary {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;
+            gap: 150px; /* Add some space between the elements */
+        }
+
+        /* Style the Place Order button */
+        #placeOrderBtn {
+            padding: 10px 30px;
+            font-size: 18px;
+            background-color: #006800;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            #placeOrderBtn:hover {
+                background-color: #004f00;
+            }
+    </style>
+</head>
+<body>
+
+
+    <div class="section-wrapper">
+        <section class="precheckout-header">
+            <h1>Order Summary</h1>
+        </section>
+    </div>
+
+    <div class="section-wrapper">
+
+        <section class="customer-details">
+            <h2>Your Details</h2>
+            <form id="customerDetailsForm" action="@Url.Action("UpdateCustomerDetails", "Checkout")" method="post">
+                <!-- First Name -->
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" value="@Model.FirstName">
+                </div>
+
+                <!-- Last Name -->
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" value="@Model.LastName">
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="@Model.Email">
+                </div>
+
+                <!-- Phone Number -->
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" value="@Model.PhoneNumber">
+                </div>
+
+                <div class="mb-3">
+                    <textarea class="form-control" id="address" name="address" placeholder="Address" value="@Model.Address">@Model.Address</textarea>
+                </div>
+
+                <!-- Order Request Message -->
+                <div class="mb-3">
+                    @if (!string.IsNullOrEmpty(ViewBag.OrderRequestMessage))
+                    {
+                        <textarea class="form-control" id="orderRequestMessage" name="orderRequestMessage" placeholder="Type your special requests for this order here.">
+                            @ViewBag.OrderRequestMessage
+                        </textarea>
+                    }
+                    else
+                    {
+                        <textarea class="form-control" id="orderRequestMessage" name="orderRequestMessage" placeholder="Type your special requests for this order here."></textarea>
+                    }
+                </div>
+                        
+
+                <input type="hidden" id="customerId" name="customerId" value="@Model.CustomerId">
+
+                <input type="hidden" id="farmerId" name="farmerId" value="@ViewBag.FarmerId">
+
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" id="placeOrderBtn">Update All</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="section-wrapper">
+
+        <section class="ordered-products">
+            <h2>Ordered Products</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in ViewBag.Products)
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>$@product.Price</td>
+                            <td>@product.Quantity</td>
+                            <td>$@(product.Price * product.Quantity)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <section class="order-total">
+                <div class="order-summary">
+                    <h3>Order Total: @ViewBag.OrderTotal$<!-- Calculate and display the order total here --></h3>
+                    <a class="btn btn-primary" id="placeOrderBtn" href="@Url.Action("Checkout", "Checkout", new { farmerId = ViewBag.FarmerId, customerId = Model.CustomerId, orderRequestMessage = ViewBag.OrderRequestMessage })">Place Order</a>
+
+                </div>
+            </section>
+
+        </section>
+    </div>
+       
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Add any additional scripts you need -->
+    <script>
+        // Your JavaScript code here
+    </script>
+</body>
+</html>

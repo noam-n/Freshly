@@ -1,0 +1,250 @@
+﻿@model FarmersPlatform.Models.Farmer
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.FirstName @Model.LastName | Personal Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .form-control {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .btn-primary-custom {
+            font-size: 1.2rem;
+            border-radius: 10px;
+            background-color: #4B0082; /* Cool Purple Color */
+            color: white;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+            .btn-primary-custom:hover {
+                background-color: white;
+                color: #4B0082;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            }
+
+        .btn-success-custom {
+            font-size: 1.2rem;
+            border-radius: 10px;
+            background-color: #1cc88a; /* Success Green Color */
+            color: white;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+            .btn-success-custom:hover {
+                background-color: white;
+                color: #1cc88a;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            }
+
+        
+
+        .gpt-button {
+            background: none;
+            border: none;
+            padding: 0;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .gpt-logo {
+            width: 30px;
+            height: 50px;
+            margin-top: 10px; /* Add margin to align the logo vertically */
+        }
+
+        .modal {
+            font-family: 'Roboto', sans-serif;
+            background-color: #2e3b53;
+        }
+
+        .modal-dialog {
+            max-width: 500px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-header {
+        }
+
+        .modal-footer {
+            padding: 10px 20px;
+            justify-content: center; /* Center the content horizontally */
+        }
+
+        .generate {
+            background-color: white;
+            color: #1cc88a;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .generate:hover{
+                background-color: #1cc88a;
+                color: white;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Update Personal Details</h2>
+
+        @if (TempData["UpdateSuccess"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Update successful!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+        }
+        <div class="mb-3">
+            <a href="@Url.Action("GoToFarmerInterface", "Farmer", new { isLoggedIn = true, farmerId = Model.FarmerId })" class="btn btn-primary-custom btn-block">Return to Farmer Interface</a>
+        </div>
+
+
+
+        <form method="post" action="/Farmer/UpdatePersonalDetails" asp-for="Model" enctype="multipart/form-data">
+            <input type="hidden" asp-for="FarmerId" />
+
+            <div class="mb-3">
+                <input type="text" class="form-control" id="firstName" asp-for="FirstName" placeholder="First Name" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" class="form-control" id="lastName" asp-for="LastName" placeholder="Last Name" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="email" class="form-control" id="email" asp-for="Email" placeholder="Email" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" class="form-control" id="phoneNumber" asp-for="PhoneNumber" placeholder="Phone Number" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" class="form-control" id="city" asp-for="City" placeholder="Town" required>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-10">
+                    <textarea rows="7" class="form-control" id="aboutMyFarm" asp-for="AboutMyFarm" placeholder="About My Farm" maxlength="350"></textarea>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-link gpt-button" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#gptModal">
+                        <img src="~/Images/GPTLogo.png" alt="GPT Logo" class="gpt-logo" />
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <input type="text" class="form-control" id="address" asp-for="Address" placeholder="Address" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn btn-primary-custom btn-block">Update</button>
+        </form>
+    </div>
+
+
+
+
+
+
+
+@*    GPT MODAL
+*@
+    <div class="modal fade" id="gptModal" tabindex="-1" aria-labelledby="gptModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gptModalLabel">Generate "About My Farm" Section</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="@Url.Action("GetResult", "GPT")">
+                    <div class="modal-body">
+                        <input type="hidden" name="farmerId" value="@Model.FarmerId" />
+
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="farmName" placeholder="Farm Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="location" placeholder="Location" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="description" placeholder="Description" required>
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select" name="style" required>
+
+                                <option value="Style1">Informative </option>
+                                <option value="Style2">Engaging</option>
+                                <option value="Style3">Relevant</option>
+                                <option value="Style4">Compelling</option>
+                                <option value="Style5">Logical</option>
+                                <option value="Style6">Unique</option>
+                                <option value="Style6">Credible</option>
+                                <option value="Style6">Professional</option>
+                                <option value="Style6">Consice</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success-custom mx-auto generate">Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,690 @@
+﻿@model FarmersPlatform.Models.FarmerAndBasketViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model._farmer.FirstName @Model._farmer.LastName's Farm</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <style>
+
+        .app-bar {
+            display: flex;
+            align-items: center;
+            background-color: #006800;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+
+            .logo {
+                display: flex;
+                align-items: center;
+            }
+        .company-logo {
+            width: 120px; /* Adjust the width value as needed */
+            height: 100%;
+            object-fit: contain;
+            margin-right: 20px; /* Adjust the margin-right value as needed */
+        }
+                
+
+            .app-bar .navigation ul {
+                list-style-type: none;
+                display: flex;
+                margin: 0;
+                padding: 0;
+            }
+
+            .app-bar .navigation li {
+                margin-right: 30px;
+            }
+
+                .app-bar .navigation li:first-child {
+                    margin-left: 0;
+                }
+
+                .app-bar .navigation li a {
+                    color: #fff;
+                    display: inline-block; /* Add display property */
+                    padding: 10px 20px; /* Add padding for width and height */
+                    border-radius: 5px; /* Add border-radius for rounded corners */
+                    transition: background-color 0.5s, color 0.5s; /* Add transition effect */
+                    text-decoration: none;
+                    font-size: 20px; /* Increase the font size to make the text bigger */
+                }
+
+                    .app-bar .navigation li a:hover {
+                        background-color: #fff; /* Change background color on hover */
+                        color: #006800; /* Change text color on hover */
+                    }
+
+            .app-bar .login {
+                display: flex;
+                align-items: center;
+                margin-left: auto; /* Move the login section to the right */
+            }
+
+            .app-bar .btn-primary {
+                background-color: #000;
+                color: #fff;
+                border: none;
+                transition: background-color 0.5s, color 0.5s;
+                margin-right: 55px;
+                font-size: 18px; /* Increase the font size to make the text bigger */
+            }
+
+                .app-bar .btn-primary:hover {
+                    background-color: #fff;
+                    color: #000;
+                    transition: background-color 0.5s, color 0.5s;
+                }
+
+                .app-bar .btn-primary:focus {
+                    background-color: #fff;
+                    color: #000;
+                }
+
+            .app-bar .dropdown-menu {
+                background-color: #fff;
+            }
+
+                .app-bar .dropdown-menu .dropdown-item {
+                    color: #000;
+                }
+
+                    .app-bar .dropdown-menu .dropdown-item:hover {
+                        background-color: #000;
+                        color: #fff;
+                        transition: background-color 0.5s, color 0.5s;
+                    }
+
+            .app-bar .basket-icon {
+                color: #fff;
+                margin-right: 10px;
+            }
+
+
+
+
+        .section {
+            padding: 20px;
+            margin-top: 40px;
+            background-color: #f0f0f0;
+        }
+
+        .title {
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .about {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .produce-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            width: 300px;
+            margin: 10px;
+            border: none;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            margin-bottom: 10px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .add-to-cart-btn {
+            display: block;
+            margin-top: 10px;
+            width: 100%;
+            background-color: #006800;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+            .add-to-cart-btn:hover {
+                background-color: #fff;
+                color: #006800;
+            }
+
+        .farm-image {
+            max-width: 600px;
+            max-height: 300px;
+            width: 400px;
+            height: 300px;
+        }
+
+        .city {
+            margin-bottom: 25px;
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+
+        .basket-container {
+            position: fixed;
+            top: 170px; /* Adjust this value as needed to position the container below the app bar and logo */
+            left: 0;
+            z-index: 999;
+            padding: 10px;
+            background-color: orange;
+            border-radius: 50%; /* Add border-radius to make it a circle */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+            transition: background-color 0.3s; /* Add transition for smooth color change */
+            cursor: pointer; /* Add cursor pointer to indicate interactivity */
+        }
+
+            .basket-container:hover {
+                background-color: #004f00; /* Change background color on hover */
+            }
+        .basket-icon {
+            width: 55px; /* Adjust the width as needed */
+            height: 70px; /* Adjust the height as needed */
+            color: #fff;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 58px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: flex-start; /* Align modal to the start (left) */
+            align-items: center;
+        }
+
+        .modal-content {
+            width: 50%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            transition: transform 0.4s ease-in-out;
+            overflow-y: auto;
+            max-height: 80%; /* Adjust the value as needed */
+            margin-left: 60px; /* Adjust the margin-left value as needed */
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px;
+            background-color: indianred;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width:55px;
+        }
+
+        .modal.show .modal-content {
+            transform: translateX(0);
+        }
+
+
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .product {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            display: flex;
+        }
+
+        .product-image {
+            width: 160px; /* Set the width as per your requirement */
+            height: 210px; /* Set the height as per your requirement */
+            object-fit: cover; /* Maintain aspect ratio and cover the container */
+            margin-right: 20px; /* Adjust the margin as needed to separate image from details */
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1; /* Allow the product details to expand to fill the remaining space */
+        }
+            
+
+        .quantity-button {
+            background-color: white;
+            color: #70c4ae;
+            border: none;
+        }
+
+            .quantity-button:hover {
+                background-color: #70c4ae; /* Cool green color on hover */
+                color: white; /* White text color on hover */
+            }
+
+        .remove-button {
+            background-color: indianred; /* Indian red background color */
+            color: white;
+            border: none;
+            margin-left: 10px; /* Add some spacing between the buttons */
+        }
+
+            .remove-button:hover {
+                background-color: #ff6b6b; /* A slightly lighter shade of red on hover */
+            }
+
+        .checkout {
+            padding-top: 15px;
+            padding-bottom: 10px;
+        }
+
+
+        .basket-message {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            background-color: #006800;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .message-content {
+            flex-grow: 1; /* Allow the content to take available space */
+        }
+
+        .close-button-container {
+            display: flex;
+            align-items: center;
+            margin-left: 10px; /* Add some spacing between message and button */
+        }
+
+        .close-button {
+            background-color: transparent;
+            color: black;
+            border: none;
+            padding: 0;
+            font-size: 21px; /* Adjust the font size if needed */
+            cursor: pointer;
+        }
+
+        /* Adjust the position of the close button */
+        .close-button-container {
+            margin-left: 45px; /* Adjust this value as needed */
+            margin-bottom: 45px;
+        }
+
+        .toggle-icon {
+            cursor: pointer;
+            transition: transform 0.3s;
+            width: 60px; /* Adjust the width to the desired size */
+            height: 70px; /* Adjust the height to the desired size */
+        }
+
+        .right-align {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        
+            
+    </style>
+</head>
+<body>
+
+    <div class="app-bar">
+        <div class="logo">
+            <a href="#top">
+            <img src="@Url.Content("~/Images/FreshfulLogo.png")" alt="Company Logo" class="company-logo" />
+            </a>
+        </div>
+
+        <div class="navigation">
+            <ul>
+@*                <li><a href="#">Fruits</a></li>
+*@                @*<li>
+                    <a href="@Url.Action("GoToVegetables", "Customer", new { ViewBag.isLoggedIn, customerId = ViewBag.customerId })">Vegetables</a>
+                </li>*@
+                <li>
+                    <a href="@Url.Action("GoToCustomerInterface", "Customer", new { ViewBag.isLoggedIn, customerId = ViewBag.customerId })" >Farmers</a>
+                </li>
+                @if (ViewBag.isLoggedIn)
+                {
+                    <li>
+                        <a href="@Url.Action("CustomerOrders", "Customer", new { customerId = ViewBag.customerId })">Orders</a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+        <div class="login">
+            @if (ViewBag.isLoggedIn)
+            {
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @ViewBag.CustomerFirstName
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        
+                        <a href="@Url.Action("PersonalDetails", "Customer", new { customerId = ViewBag.customerId })" class="dropdown-item">Personal Details</a>
+                        <a href="@Url.Action("Logout", "Customer", new { customerId = ViewBag.customerId })" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a href="@Url.Action("ShowLoginPage", "Home", new { isFarmer = false })" class="btn btn-primary">Login</a>
+            }
+            <i class="basket-icon fas fa-shopping-cart"></i>
+        </div>
+    </div>
+
+
+    <div class="basket-container">
+        <img src="@Url.Content("~/Images/basketIcon3.png")" alt="Basket Icon" class="basket-icon">
+        @if (!string.IsNullOrEmpty(ViewBag.ProductAddedToBasketSuccuess))
+        {
+            <div class="basket-message" id="basketMessage">
+                <div class="message-content">
+                    @ViewBag.ProductAddedToBasketSuccuess
+                </div>
+                <div class="close-button-container">
+                    <button class="close-button" onclick="dismissMessage()">&times;</button>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+    <div class="container" id="top">
+        <div class="section">
+            <div class="row">
+                <div class="col-6">
+                    <img src="@Url.Content("~/Images/" + Model._farmer.Image)" alt="Farmer Image" class="farm-image" />
+                </div>
+                <div class="col-6 text-center">
+                    <h1 class="title display-2 font-weight-bold">@Model._farmer.FirstName @Model._farmer.LastName's Farm</h1>
+                    <div class="city h4">@Model._farmer.City</div>
+                    <h2 class="contact">Contact</h2>
+                    <div class="contact-details">
+                        <p class="h5">Email: @Model._farmer.Email</p>
+                        <p class="h5">Phone: @Model._farmer.PhoneNumber</p>
+
+
+                    </div>
+                </div>
+                        @*Arrow Button*@
+
+                            @if (!string.IsNullOrEmpty(Model._farmer.AboutMyFarm) && Model._farmer.AboutMyFarm.Length > 10)
+                            {
+                            <div class="right-align">
+                                <a href="#about-section">
+                                    <img src="@Url.Content("~/Images/down-arrow.svg")" class="toggle-icon" />
+                                </a>
+                            </div>
+                            }
+            </div>
+        </div>
+
+
+
+
+        <div id="basketModal" class="modal" >
+            <div class="modal-content" >
+                <h3>Basket Details</h3>
+                <div id="basketProducts">
+                    @foreach (var product in Model._basket.GetProducts())
+                    {
+                        <div class="product" id="product_@product.ProductId">
+                            <img src="@Url.Content("~/Images/" + product.Image)" class="product-image" alt="Product Image">
+                            <div class="product-details">
+                                <h4>@product.Name</h4>
+                                <p>@product.Category</p>
+                                <p>Price: @product.Price</p>
+                                <p>Quantity: <span id="quantity_@product.ProductId">@product.Quantity</span></p>
+                                <div class="quantity-buttons">
+                                    <button class="btn btn-primary quantity-button" onclick="incrementQuantity('@product.ProductId')">+</button>
+                                    <button class="btn btn-primary quantity-button" onclick="decrementQuantity('@product.ProductId')">-</button>
+                                    <a href="@Url.Action("RemoveProduct", "Basket", new { productId = product.ProductId, farmerId = Model._farmer.FarmerId, ViewBag.isLoggedIn, ViewBag.customerId })" class="btn btn-danger remove-button">x</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+                    <div>
+                        <p>
+                            <h4>Products: @Model._basket.GetNumberOfItems()</h4> 
+                        </p>
+                    </div>
+
+                    <form id="checkoutForm" action="@Url.Action("UpdateQuantity", "Checkout")" method="post">
+                        @foreach (var product in Model._basket.GetProducts())
+                        {
+                            <input type="hidden" name="products[@product.ProductId].ProductId" value="@product.ProductId" />
+                            <input type="hidden" name="products[@product.ProductId].Quantity" id="quantity_input_@product.ProductId" value="@product.Quantity" />
+                        }
+
+                        <input type="hidden" name="farmerId" value="@Model._farmer.FarmerId" />
+                        <input type="hidden" name="customerId" value="@ViewBag.CustomerId" />
+                        @if (ViewBag.isLoggedIn)
+                        {
+                            <div class="checkout">
+                                <button type="submit" class="btn btn-primary">Checkout</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("ShowLoginPage", "Home", new { isFarmer = false })" class="btn btn-primary">Log in before the purchase</a>
+                        }
+
+                            
+                    </form>
+                </div>
+                
+
+                <button id="closeBasketModal" class="close-button">
+                    <span>&times;</span>
+                </button>
+            </div>
+        </div>
+       
+
+
+
+        <div class="section">
+            <h2 class="produce-title">@Model._farmer.FirstName's Produce</h2>
+            <div class="row">
+                @foreach (var product in ViewBag.Products)
+                {
+                    <div class="col-3">
+                        <div class="card product-card">
+
+                            
+                            <img src="@Url.Content("~/Images/" + product.Image)" class="card-img-top" alt="Product Image">
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text">Price Per KG: $@product.Price </p>
+                                <p class="card-text">Category: @product.Category</p>
+                                <a href="@Url.Action("AddProduct", "Basket", new { productId = product.ProductId , isLoggedIn = ViewBag.isLoggedIn , customerId = ViewBag.CustomerId})" class="btn btn-primary add-to-cart-btn">Add to Basket</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                   
+
+                }
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model._farmer.AboutMyFarm) && Model._farmer.AboutMyFarm.Length > 10)
+        {
+            <div class="section" id="about-section">
+                <h2 class="title">About @Model._farmer.FirstName's Farm</h2>
+                <p class="about">@Model._farmer.AboutMyFarm</p>
+            </div>
+        }
+
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script>        
+        $(document).ready(function () {
+            // Click event for the basket icon
+            $('.basket-icon').click(function () {
+                
+                // Show the basket modal with animation
+                $('#basketModal').fadeIn('fast').css('display', 'flex');
+
+            });
+
+            // Close the basket modal when the close button is clicked
+            $('#closeBasketModal').click(function () {
+                $('#basketModal').fadeOut('fast');
+            });
+        });
+    </script>
+    
+
+    <script>
+        function dismissMessage() {
+        var messageElement = document.getElementById('basketMessage');
+        messageElement.style.opacity = '0';
+        setTimeout(function () {
+        messageElement.style.display = 'none';
+        }, 300); // Hide after transition is complete
+        }
+    </script>
+
+
+    <script>
+        var productsData = @Html.Raw(Json.Serialize(Model._basket.GetProducts()));
+
+
+        function updateTotalPrice() {
+            var totalPriceElement = document.getElementById('totalPrice');
+            var newTotalPrice = 0;
+
+            // Calculate the new total price based on the updated quantities
+            for (var i = 0; i < productsData.length; i++) {
+                var product = productsData[i];
+                var quantityElement = document.getElementById('quantity_' + product.ProductId);
+                var price = product.Price;
+                var quantity = parseInt(quantityElement.innerText);
+                newTotalPrice += price * quantity;
+            }
+
+            // Update the total price element with the new value
+            totalPriceElement.innerText = newTotalPrice.toFixed(2);
+        }
+
+
+
+
+
+        function updateProductQuantity(productId, newQuantity) {
+            $.ajax({
+                url: '@Url.Action("UpdateQuantity", "Checkout")',
+                type: 'POST',
+                data: {
+                    productId: productId,
+                    newQuantity: newQuantity
+                },
+                success: function (result) {
+                    if (result.success) {
+                        // Update the total price on the frontend after successful quantity update
+                        updateTotalPrice();
+                    }
+                },
+                error: function (error) {
+                    // Handle error, if needed
+                }
+            });
+        }
+
+        function incrementQuantity(productId) {
+            var quantityElement = document.getElementById('quantity_' + productId);
+            var currentQuantity = parseInt(quantityElement.innerText);
+            var newQuantity = currentQuantity + 1;
+            quantityElement.innerText = newQuantity;
+
+            // Update the product.Quantity in the Model._basket.GetProducts() collection
+            updateProductQuantity(productId, newQuantity);
+
+            // Update the hidden input element with the new quantity
+            var hiddenQuantityInput = document.getElementById('quantity_input_' + productId);
+            hiddenQuantityInput.value = newQuantity;
+
+            // Update the total price
+            updateTotalPrice();
+        }
+
+        function decrementQuantity(productId) {
+            var quantityElement = document.getElementById('quantity_' + productId);
+            var currentQuantity = parseInt(quantityElement.innerText);
+            if (currentQuantity > 1) {
+                var newQuantity = currentQuantity - 1;
+                quantityElement.innerText = newQuantity;
+
+                // Update the product.Quantity in the Model._basket.GetProducts() collection
+                updateProductQuantity(productId, newQuantity);
+
+                // Update the hidden input element with the new quantity
+                var hiddenQuantityInput = document.getElementById('quantity_input_' + productId);
+                hiddenQuantityInput.value = newQuantity;
+                updateTotalPrice();
+
+            }
+        }
+
+    </script>
+</body>
+</html>
